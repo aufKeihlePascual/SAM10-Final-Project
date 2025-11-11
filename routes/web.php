@@ -12,6 +12,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/streamers', [StreamerController::class, 'index'])->name('streamers.index');
+    Route::post('/streamers', [StreamerController::class, 'store'])->name('streamers.store');
     Route::post('/streamers/{streamer}/follow', [StreamerController::class, 'follow'])->name('streamers.follow');
     Route::delete('/streamers/{streamer}/unfollow', [StreamerController::class, 'unfollow'])->name('streamers.unfollow');
 
