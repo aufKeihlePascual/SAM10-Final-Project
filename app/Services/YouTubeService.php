@@ -4,6 +4,8 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+use App\Models\Stream;
+use Illuminate\Support\Facades\Log;
 
 class YouTubeService
 {
@@ -71,5 +73,25 @@ class YouTubeService
         }
 
         return $mapped;
+    }
+
+    public function storeStream(int $streamerId, array $item): Stream
+    {
+        try {
+            return Stream::updateOrCreate(
+                ['video_id' => $item['video_id']],
+                [
+                    'streamer_id' => $streamerId,
+                    'title' => $item['title'],
+                    'video_url' => $item['video_url'],
+                    'thumbnail_url' => $item['thumbnail_url'],
+                    'scheduled_start' => $item['scheduled_start'] ?? null,
+                    'status' => $item['status'],
+                ]
+            );
+        } catch (\Exception $e) {
+            Log::error("Failed saving stream for streamer {$streamerId}: " . $e->getMessage());
+            throw $e;
+        }
     }
 }

@@ -25,4 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/debug/youtube', [StreamerController::class, 'debugYouTube']);
+
 require __DIR__.'/auth.php';
