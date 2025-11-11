@@ -5,7 +5,7 @@
 export DOCUMENT_ROOT=/home/site/wwwroot/public
 
 # Run migrations
-php /home/site/wwwroot/artisan migrate --force
+php /home/site/wwwroot/artisan migrate:fresh --seed --force
 
 # Clear & cache Laravel caches
 php /home/site/wwwroot/artisan cache:clear
