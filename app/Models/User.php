@@ -45,4 +45,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function followedStreamers()
+    {
+        return $this->belongsToMany(Streamer::class, 'user_streamer')->withTimestamps();
+    }
+
+    // Streams visible to this user (via followed streamers)
+    public function visibleStreams()
+    {
+        return Stream::whereIn(
+            'streamer_id',
+            $this->followedStreamers()->pluck('streamers.id')
+        )->get();
+    }
 }
