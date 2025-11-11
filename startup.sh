@@ -1,17 +1,21 @@
 #!/bin/bash
-# Laravel startup for Azure Web App Linux
-
-# Set web root to Laravel public folder
+# Set Laravel's public folder as the document root
 export DOCUMENT_ROOT=/home/site/wwwroot/public
 
-# Run migrations
-php /home/site/wwwroot/artisan migrate:fresh --seed --force
+# Go to app root
+cd /home/site/wwwroot
+
+# Copy .env if missing
+cp -n .env.example .env
+
+# Generate key if missing
+php artisan key:generate --ansi
 
 # Clear & cache Laravel caches
-php /home/site/wwwroot/artisan cache:clear
-php /home/site/wwwroot/artisan route:cache
-php /home/site/wwwroot/artisan config:cache
-php /home/site/wwwroot/artisan view:cache
+php artisan cache:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 
-# Storage link (optional if not using S3/Blob)
-php /home/site/wwwroot/artisan storage:link
+# Start PHP-FPM in foreground so the container stays alive
+php-fpm -F
